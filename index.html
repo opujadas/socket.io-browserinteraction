@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO browser-interaction</title>
+  </head>
+  <body>
+
+  <h1>browser-interaction</h1>
+  <p>Petit exercice pour tester la connexion entre navigateurs via Socket.io !</p>
+  <br>
+  <br>
+    <label for="name">Name : </label>
+    <input type="text" id="name"/>
+    <button id="send">Say hello !</button>
+    <br><br>
+    <ul id="list"></ul>
+
+
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+
+        var socket = io({transports: ['websocket'], upgrade: false});
+        
+        // Qd on clicke sur le bouton on emet via le socket name le nom entré
+        document.getElementById('send').addEventListener('click', function(e)
+        {
+          console.log('On émet dans le socket name le nom : ' + name); 
+          socket.emit('name', document.getElementById('name').value);
+        });
+
+
+        socket.on('name', function(name)
+        {
+          console.log('Je reçois un nom ! ' + name); 
+          var li = document.createElement('li');
+          li.appendChild(document.createTextNode(name + ' dit bonjour !'));
+          document.getElementById('list').appendChild(li); 
+        });
+
+    </script>
+  </body>
+</html>
